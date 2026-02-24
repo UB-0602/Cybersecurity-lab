@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h3>Attack World Map</h3>
+<div id="map" style="height:400px;"></div>
+
+<script>
+var map=L.map('map').setView([20,0],2);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+// Demo marker (replace with real IP later)
+L.marker([28.6,77.2]).addTo(map)
+.bindPopup("Attack Source").openPopup();
+</script>
+
+{% endblock %}

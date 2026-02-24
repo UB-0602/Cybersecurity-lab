@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cyber Security Lab</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+
+    <!-- Chart.js for graph -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<!-- Boot Intro -->
+<div id="boot">Initializing Cyber Defense System...</div>
+
+<!-- Matrix Background -->
+<canvas id="matrix"></canvas>
+
+<!-- ===== MAIN LAYOUT ===== -->
+<div class="main-layout">
+
+    <!-- LEFT MENU -->
+    <div class="sidebar">
+
+        <h2>Cyber Lab</h2>
+
+        <a href="/">Home</a>
+        <a href="/sql_vuln">SQL Injection</a>
+        <a href="/xss">XSS</a>
+        <a href="/password">Password Tool</a>
+        <a href="/analytics">Analytics</a>
+        <a href="/admin">Admin</a>
+        <a href="/login">Login</a>
+        <a href="/csrf">CSRF</a>
+
+        <!-- Radar Scanner -->
+        <div class="radar"></div>
+
+    </div>
+
+
+    <!-- RIGHT CONTENT -->
+    <div class="content-area">
+
+        <!-- Live Terminal -->
+        <div class="terminal" id="term"></div>
+
+        <!-- Attack Graph -->
+        <canvas id="attackChart"></canvas>
+
+        <!-- Alert -->
+        <div id="alertbox"></div>
+
+        <!-- Page Content -->
+        <div class="page-content">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ========================= -->
+<!-- MATRIX SCRIPT (FIXED) -->
+<!-- ========================= -->
+<script>
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+
+const letters="01XSSSQL{}<>/\\";
+const fontSize=14;
+const columns=canvas.width/fontSize;
+const drops=Array(Math.floor(columns)).fill(1);
+
+function draw(){
+ ctx.fillStyle="rgba(0,0,0,0.05)";
+ ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ ctx.fillStyle="#00ff88";
+ ctx.font=fontSize+"px monospace";
+
+ for(let i=0;i<drops.length;i++){
+  const text=letters[Math.random()*letters.length|0];
+  ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+
+  if(drops[i]*fontSize>canvas.height && Math.random()>0.975)
+    drops[i]=0;
+
+  drops[i]++;
+ }
+}
+setInterval(draw,33);
+</script>
+
+<!-- Boot Hide -->
+<script>
+setTimeout(()=>{
+ document.getElementById("boot").style.display="none";
+},2000);
+</script>
+
+<!-- Terminal Feed -->
+<script>
+setInterval(()=>{
+ fetch("/analytics_data")
+ .then(r=>r.json())
+ .then(d=>{
+   let t=document.getElementById("term");
+
+   t.innerHTML += "SCAN >> "+JSON.stringify(d)+"<br>";
+
+   let lines=t.innerHTML.split("<br>");
+   if(lines.length>40){
+       lines.shift();
+       t.innerHTML=lines.join("<br>");
+   }
+
+   t.scrollTop=t.scrollHeight;
+ })
+},1200)
+</script>
+
+<!-- Alert System -->
+<script>
+let lastCount=0;
+
+setInterval(()=>{
+ fetch("/attack_count")
+ .then(r=>r.json())
+ .then(d=>{
+   if(d.count>lastCount){
+      let box=document.getElementById("alertbox");
+      box.innerHTML="⚠ ATTACK DETECTED!";
+      setTimeout(()=>{box.innerHTML=""},2000)
+   }
+   lastCount=d.count
+ })
+},1000)
+</script>
+
+<!-- Attack Graph -->
+<script>
+const ctx2=document.getElementById('attackChart');
+
+const chart=new Chart(ctx2,{
+ type:'line',
+ data:{labels:[],datasets:[{label:'Attacks',data:[],borderWidth:2}]},
+ options:{animation:false}
+});
+
+setInterval(()=>{
+ fetch("/attack_count")
+ .then(r=>r.json())
+ .then(d=>{
+    chart.data.labels.push("");
+    chart.data.datasets[0].data.push(d.count);
+
+    if(chart.data.labels.length>20){
+        chart.data.labels.shift();
+        chart.data.datasets[0].data.shift();
+    }
+    chart.update();
+ })
+},1000)
+</script>
+
+</body>
+</html>

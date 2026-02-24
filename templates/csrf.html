@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h3>CSRF Demonstration</h3>
+
+<form method="POST">
+<input type="hidden" name="token" value="{{token}}">
+<button>Submit Legit Request</button>
+</form>
+
+<p>{{msg}}</p>
+
+{% endblock %}

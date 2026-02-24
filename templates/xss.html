@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h3>XSS Demo</h3>
+
+<form method="POST">
+<input name="t">
+<button>Send</button>
+</form>
+
+<div style="width:300px;background:#111;border-radius:6px">
+<div style="
+width:{{conf}}%;
+background:linear-gradient(90deg,#00ff9c,#00ffa2,#ffcc00,#ff3300);
+color:black;
+padding:6px;
+border-radius:6px;
+font-weight:bold;
+transition:0.4s;">
+Threat Score {{conf}}%
+</div>
+</div>
+
+<p>{{text|safe}}</p>
+<p>AI Detection: {{result}}</p>
+<p>Confidence: {{conf}}%</p>
+
+{% endblock %}

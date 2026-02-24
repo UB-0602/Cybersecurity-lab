@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h2>Admin Panel</h2>
+
+<h3>Blocked IPs</h3>
+<ul>
+{% for ip in blocked %}
+<li>{{ip}}</li>
+{% endfor %}
+</ul>
+
+<h3>Logs</h3>
+
+<ul>
+{% for l in logs %}
+<li>
+{{l}}
+
+{% set parts = l.split(" ") %}
+{% set ip = parts[-1] %}
+
+<a href="/block_ip/{{ip}}">
+<button>Block</button>
+</a>
+
+</li>
+{% endfor %}
+</ul>
+
+{% endblock %}

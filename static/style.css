@@ -1,0 +1,170 @@
+/* ============================= */
+/* GLOBAL THEME */
+/* ============================= */
+
+body{
+    background:#0b0f0c;
+    color:#00ff9f;
+    font-family:Consolas, monospace;
+    margin:0;
+}
+
+/* Matrix canvas */
+#matrix{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:-1;
+}
+
+/* Links */
+a{
+    color:#00ffaa;
+    text-decoration:none;
+}
+
+a:hover{
+    color:white;
+}
+
+/* Headings */
+h2,h3{
+    color:#00ffcc;
+}
+
+/* Inputs */
+input,button{
+    background:#001a12;
+    color:#00ff88;
+    border:1px solid #00ff88;
+    padding:6px;
+    margin:4px;
+}
+
+button:hover{
+    background:#003322;
+}
+
+
+/* ============================= */
+/* LAYOUT */
+/* ============================= */
+
+.main-layout{
+    display:flex;
+    height:100vh;
+}
+
+/* Sidebar */
+.sidebar{
+    width:220px;
+    background:#001a12;
+    padding:15px;
+    border-right:1px solid #00ff88;
+}
+
+.sidebar a{
+    display:block;
+    margin:8px 0;
+}
+
+/* Content Area */
+.content-area{
+    flex:1;
+    padding:15px;
+}
+
+/* Page Content */
+.page-content{
+    background:#001a12;
+    padding:10px;
+    border:1px solid #00ff88;
+}
+
+
+/* ============================= */
+/* TERMINAL */
+/* ============================= */
+
+.terminal{
+    height:300px;
+    overflow:auto;
+    background:black;
+    padding:10px;
+    border:1px solid #00ff88;
+    margin-bottom:15px;
+
+    /* Glow Pulse Animation */
+    animation: glowPulse 2s infinite alternate;
+}
+
+@keyframes glowPulse{
+    from{
+        box-shadow:0 0 5px #00ff88;
+    }
+    to{
+        box-shadow:
+            0 0 20px #00ff88,
+            0 0 40px #00ff88;
+    }
+}
+
+
+/* ============================= */
+/* ALERT */
+/* ============================= */
+
+#alertbox{
+    color:red;
+    font-weight:bold;
+    height:20px;
+}
+
+
+/* ============================= */
+/* RADAR SCANNER */
+/* ============================= */
+
+.radar{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    border:2px solid #00ff88;
+    margin-top:20px;
+    position:relative;
+    overflow:hidden;
+}
+
+.radar::after{
+    content:"";
+    position:absolute;
+    width:2px;
+    height:100%;
+    background:#00ff88;
+    left:50%;
+    transform-origin:bottom;
+    animation:sweep 2s linear infinite;
+}
+
+@keyframes sweep{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+
+
+/* ============================= */
+/* BOOT SCREEN */
+/* ============================= */
+
+#boot{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:black;
+    color:#00ff88;
+    font-size:24px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}

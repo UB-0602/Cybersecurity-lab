@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h3>SQL Injection Demo</h3>
+
+<form method="POST">
+<input name="u">
+<input name="p">
+<button>Try Login</button>
+</form>
+
+<p>{{msg}}</p>
+
+{% endblock %}

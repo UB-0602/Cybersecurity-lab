@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h2>Attack Analytics</h2>  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  <canvas id="pie"></canvas>
+
+<script>  
+fetch("/analytics_data")  
+.then(r=>r.json())  
+.then(data=>{  
+  
+ new Chart(document.getElementById("pie"),{  
+   type:"pie",  
+   data:{  
+     labels:Object.keys(data),  
+     datasets:[{  
+       data:Object.values(data)  
+     }]  
+   }  
+ });  
+  
+});  
+</script>  <hr>  
+<h2>Attack Timeline</h2>  
+<canvas id="line"></canvas>  <script>  
+fetch("/timeline_data")  
+.then(r=>r.json())  
+.then(data=>{  
+  
+ new Chart(document.getElementById("line"),{  
+   type:"line",  
+   data:{  
+     labels:Object.keys(data),  
+     datasets:[{  
+       label:"Attack Events",  
+       data:Object.values(data),  
+       fill:false  
+     }]  
+   }  
+ });  
+  
+});  
+</script>  {% endblock %}
